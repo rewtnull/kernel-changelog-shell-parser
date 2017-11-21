@@ -22,21 +22,21 @@ DESCRIPTION
 	However, when the minor 4.14.1 update is released there will be a
 	changelog for it available.
 
-	-	By default it displays the entire changelog for the selected
-		kernel version
-	-	Optionally displays commit# (in order of appearance in changelog)
-		if an integer is entered at the end of the script arguments.
+	- By default it displays the entire changelog for the selected
+	  kernel version
+	- Optionally displays commit# (in order of appearance in changelog)
+	  if an integer is entered at the end of the script arguments.
 
 ARGUMENTS
 
-	-h, --help		Display this help
-	-v, --version		Display version and exit
+	-h, --help			Display this help
+	-v, --version			Display version and exit
 
 	OPTIONS
 
 	-k, --kernel <version>	Kernel version in format
-				<1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]
-	int			Commit# (in order of appearance)
+					<1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]
+	int				Commit# (in order of appearance)
 
 	Required option is --kernel, and optionally an integer
 
@@ -44,10 +44,10 @@ DEPENDENCIES
 
 	You need to be root to run this script
 
-	-	bash v4.2 or newer
-	-	curl
-	-	awk
-	-	gnu getopt
+	- bash v4.2 or newer
+	- curl
+	- awk
+	- gnu getopt
 
 	kcp.sh has built in sanity checks and will exit if any of these
 	conditions are not met.
@@ -68,7 +68,7 @@ REPORTING BUGS
 
 COPYRIGHT
 
-	Copyright © 2017 Marcus Hoffren. License GPLv3+:
+	Copyright Â© 2017 Marcus Hoffren. License GPLv3+:
 	GNU GPL version 3 or later - http://gnu.org/licenses/gpl.html
 
 	This is free software: you are free to change and redistribute it.
@@ -79,11 +79,9 @@ CHANGELOG
 	LEGEND: [+] Add, [-] Remove, [*] Change, [!] Bugfix
 
 	v0.1 (20171121)		[+] Initial release
-	v0.2 (20171122)		[*] Fixed some (non breaking) typos in
-					code and readme
-				    [!] Fixed some sanity check bugs based
-					on some tips from /r/bash
-
+	v0.2 (20171122)		[*] Fixed some (non breaking) typos in code and readme
+					[!] Fixed some sanity check bugs based on some tips from /r/bash
+					[*] Cleaned up some code and squashed a couple of shellcheck warnings
 TODO
 
 	Send ideas to marcus@harikazen.com
