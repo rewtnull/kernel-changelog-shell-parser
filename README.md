@@ -8,7 +8,7 @@ VERSION
 
 SYNOPSIS:
 
-	kcp.sh [-h|--help] [-v|--version] <-k|--kernel <version>> [int]"
+	kcp.sh [-h|--help] [-v|--version] <-k|--kernel <version>> [int]
 
 DESCRIPTION
 
@@ -34,8 +34,8 @@ ARGUMENTS
 
 	OPTIONS
 
-	-k, --kernel <kernel>	Kernel version in format
-				<1-9>[1-9].<1-9>[1-9].<1-9>[1-9]
+	-k, --kernel <version>	Kernel version in format
+				<1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]
 	int			Commit# (in order of appearance)
 
 	Required option is --kernel, and optionally an integer
@@ -79,6 +79,10 @@ CHANGELOG
 	LEGEND: [+] Add, [-] Remove, [*] Change, [!] Bugfix
 
 	v0.1 (20171121)		[+] Initial release
+	v0.2 (20171122)		[*] Fixed some (non breaking) typos in
+				    code and readme
+				[!] Fixed some sanity check bugs based
+				    on some tips given by reddit user X700
 
 TODO
 

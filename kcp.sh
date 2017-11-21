@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    kernel.org changelog shell parser v0.1"
+#    kernel.org changelog shell parser v0.2
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    echo "kernel.org changelog shell parser v0.1"
+    echo "kernel.org changelog shell parser v0.2"
     echo "Copyright (C) 2017 Marcus Hoffren."
     echo "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     echo "This is free software: you are free to change and redistribute it."
@@ -27,8 +27,8 @@ usage() {
     echo ""
     echo "OPTIONS"
     echo ""
-    echo "-k, --kernel <kernel>   Kernel version in format"
-    echo "                        <1-9>[1-9].<1-9>[1-9].<1-9>[1-9]"
+    echo "-k, --kernel <version>  Kernel version in format"
+    echo "                        <1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]"
     echo "int                     Commit# (in order of appearance)"
     echo ""
     echo "Required option is --kernel, and optionally an integer"
@@ -40,19 +40,21 @@ error() {
 }
 
 missing() {
-    [[ $(type -p "${1}") ]] || { error "${1} is missing. Install \033[1m${2}\033[m"; exit 1; }
+    [[ $(type "${1}" 2>/dev/null) ]] || { error "\033[1m${1}\033[m is missing. install \033[1m${2}\033[m"; exit 1; }
 }
-
 
 ### <sanity_check>
 
-[[ "${BASH_VERSION}" < 4.2 ]] && error "${0##*/} requires \033[1mbash v4.4\033[m or newer"
+if [[ "${BASH_VERSINFO[0]}" -lt "4" ]] || [[ "${BASH_VERSINFO[0]}" -eq "4" && "${BASH_VERSINFO[1]}" -lt "2" ]]; then
+    error "${0##*/} requires \033[1mbash v4.2\033[m or newer"
+fi
 
-missing "curl" "curl is missing"
-missing "awk" "awk is missing"
-missing "getopt" "gnu getopt is missing"
+[[ "$(getopt -V)" =~ util-linux ]] || error "getopt is missing or is the wrong version. \033[1mutil-linux getopt\033[m required"
 
-unset missing
+missing "curl" "curl"
+missing "awk" "awk"
+
+unset -f missing
 
 ### </sanity_check>
 
@@ -80,12 +82,16 @@ while true; do
 	    usage
 	    exit 1;;
     esac
-done; unset OPTS version error
+done; unset OPTS version
+
+unset -f error
 
 int="${1}"
 
 re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
-[[ "${kernel}" =~ ${re} ]] || { usage; exit 1; }; unset re usage
+[[ "${kernel}" =~ ${re} ]] || { usage; exit 1; }; unset re
+
+unset -f usage
 
 ### </script_arguments>
 
