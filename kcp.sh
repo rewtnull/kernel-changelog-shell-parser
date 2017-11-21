@@ -36,25 +36,23 @@ usage() {
 }
 
 error() {
-    { echo -e "\n\e[91m*\e[0m ${@}\n" 1>&2; exit 1; }
+    { echo -e "\n\e[91m*\e[0m ${*}\n" 1>&2; exit 1; }
 }
 
 missing() {
-    [[ $(type "${1}" 2>/dev/null) ]] || { error "\033[1m${1}\033[m is missing. install \033[1m${2}\033[m"; exit 1; }
+    type -p "${1}" >/dev/null || { error "\033[1m${1}\033[m is missing. install \033[1m${2}\033[m"; exit 1; }
 }
 
 ### <sanity_check>
 
-if [[ "${BASH_VERSINFO[0]}" -lt "4" ]] || [[ "${BASH_VERSINFO[0]}" -eq "4" && "${BASH_VERSINFO[1]}" -lt "2" ]]; then
+if [[ ${BASH_VERSINFO[0]} -lt "4" ]] || [[ ${BASH_VERSINFO[0]} -eq "4" && ${BASH_VERSINFO[1]} -lt "2" ]]; then
     error "${0##*/} requires \033[1mbash v4.2\033[m or newer"
 fi
 
-[[ "$(getopt -V)" =~ util-linux ]] || error "getopt is missing or is the wrong version. \033[1mutil-linux getopt\033[m required"
+[[ $(getopt -V) =~ util-linux ]] || error "getopt is missing or is the wrong version. \033[1mutil-linux getopt\033[m required"
 
 missing "curl" "curl"
 missing "awk" "awk"
-
-unset -f missing
 
 ### </sanity_check>
 
@@ -84,22 +82,18 @@ while true; do
     esac
 done; unset OPTS version
 
-unset -f error
-
 int="${1}"
 
 re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
-[[ "${kernel}" =~ ${re} ]] || { usage; exit 1; }; unset re
-
-unset -f usage
+[[ ${kernel} =~ ${re} ]] || { usage; exit 1; }; unset re
 
 ### </script_arguments>
 
 majver="v${kernel%%.*}.x" # major version in format "vN.x" where N is an int
-changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/${majver}/ChangeLog-${kernel})"; unset majver kernel # scrape changelog from kernel.org
+changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/"${majver}"/ChangeLog-"${kernel}")"; unset majver kernel # scrape changelog from kernel.org
 
-if [[ "${int}" =~ ^-?[0-9]+$ ]]; then
-    echo "${changelog}" | awk -v n=${int} '/^commit/ {line++} (line==n) {print}' # match n from ^commit until next ^commit
+if [[ ${int} =~ ^-?[0-9]+$ ]]; then
+    echo "${changelog}" | awk -v n="${int}" '/^commit/ {line++} (line==n) {print}' # match n from ^commit until next ^commit
 else
     echo "${changelog}"
 fi; unset changelog int
