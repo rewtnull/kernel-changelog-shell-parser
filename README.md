@@ -79,7 +79,7 @@ CHANGELOG
 	LEGEND: [+] Add, [-] Remove, [*] Change, [!] Bugfix
 
 	v0.1 (20171121)		[+] Initial release
-	v0.2 (20171122)		[*] Fixed some (non breaking) typos in code and readme
+	v0.2 (20171121)		[*] Fixed some (non breaking) typos in code and readme
 					[!] Fixed some sanity check bugs based on some tips from /r/bash
 					[*] Cleaned up some code and squashed a couple of shellcheck warnings
 TODO
