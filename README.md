@@ -29,14 +29,14 @@ DESCRIPTION
 
 ARGUMENTS
 
-	-h, --help		Display this help
-	-v, --version		Display version and exit
+	-h, --help			Display this help
+	-v, --version			Display version and exit
 
 	OPTIONS
 
-	-k, --kernel <version>	Kernel version in format
-				<1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]
-	int			Commit# (in order of appearance)
+	-k, --kernel <version>			Kernel version in format
+						<1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]
+	int					Commit# (in order of appearance)
 
 	Required option is --kernel, and optionally an integer
 
