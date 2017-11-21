@@ -80,9 +80,9 @@ CHANGELOG
 
 	v0.1 (20171121)		[+] Initial release
 	v0.2 (20171122)		[*] Fixed some (non breaking) typos in
-				    code and readme
-				[!] Fixed some sanity check bugs based
-				    on some tips given by reddit user X700
+					code and readme
+				    [!] Fixed some sanity check bugs based
+					on some tips from /r/bash
 
 TODO
 
