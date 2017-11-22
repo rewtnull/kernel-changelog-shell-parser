@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    kernel.org changelog shell parser v0.4
+#    kernel.org changelog shell parser v0.5
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    echo "kernel.org changelog shell parser v0.4"
+    echo "kernel.org changelog shell parser v0.5"
     echo "Copyright (C) 2017 Marcus Hoffren."
     echo "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     echo "This is free software: you are free to change and redistribute it."
@@ -54,7 +54,7 @@ if [[ ${BASH_VERSINFO[0]} -lt "4" ]] || [[ ${BASH_VERSINFO[0]} -ge "4" && ${BASH
     error "${0##*/} requires ${bold}bash v4.2${off} or newer"
 fi
 
-[[ $(getopt -V) =~ util-linux ]] || error "getopt is missing or is the wrong version. ${bold}util-linux getopt${off} is required"
+[[ $(getopt -V) =~ util-linux ]] || error "getopt is missing, or is the wrong version. ${bold}util-linux getopt${off} is required"
 
 missing "curl" "curl"
 missing "awk" "awk"
@@ -98,11 +98,12 @@ majver="v${kernel%%.*}.x" # major version in format "vN.x" where N is an int
 changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/"${majver}"/ChangeLog-"${kernel}")"; unset majver kernel # scrape changelog from kernel.org
 
 if [[ ${arg} =~ ^-?[0-9]+$ ]]; then # if input argument is an integer
-    echo "${changelog}" | awk -v n="${arg}" '/^commit/ {line++} (line==n) {print}' # match n from ^commit until next ^commit
+    echo "${changelog}" | awk -v n="${arg}" "/^commit/ {line++} (line==n) {print}" # match n from ^commit until next ^commit
 elif [[ ${arg} =~ ^[a-zA-Z0-9]+$ ]]; then # if input argument consists of numbers and/or letters
-    echo "${changelog}" | awk '/^commit[[:space:]]'${arg}'$/ {p=1;print;next} /^commit/ && p {p=0} p' # match hash until ^commit or eof
+    echo "${changelog}" | awk "/^commit[[:space:]]${arg}$/ {p=1;print;next} /^commit/ && p {p=0} p" # match hash until ^commit or eof
 else
     echo "${changelog}" # if no input argument, show the entire changelog
 fi; unset changelog arg
 
 exit 0
+

@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-	0.4
+	0.5
 
 SYNOPSIS:
 
@@ -13,7 +13,8 @@ SYNOPSIS:
 DESCRIPTION
 
 	This script displays kernel changelogs from
-	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell.
+	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell. Bash and fully
+	POSIX compatible versions available.
 
 	- By default it displays the entire changelog for the selected
 	  kernel version
@@ -42,14 +43,25 @@ ARGUMENTS
 
 	Required option is --kernel, and optionally an integer or a hash
 
+	Note: The POSIX compatible version only supports the short options.
+
 DEPENDENCIES
 
 	You need to be root to run this script
 
-	- bash v4.2 or newer
 	- curl
 	- awk
-	- getopt from util-linux
+
+	Additionally, depending on the script version you will need:
+
+	    Bash version
+
+	    - bash v4.2 or newer for the ordinary version
+	    - getopt from util-linux
+
+	    POSIX compatible version
+
+	    - sh
 
 	kcp.sh has built in sanity checks and will exit if any of these
 	conditions are not met.
@@ -88,6 +100,8 @@ CHANGELOG
 					[*] Now using tput instead of hardcoded terminal sequences for output
 					[!] Fixed silly little bug in bash version check
 	v0.4 (20171122)		[+] Added support to display commit by hash
+	v0.5 (20171122)		[+] Rewrote the script to be fully POSIX compatible, and included it
+					[*] Squashed the last shellcheck warning
 
 TODO
 
