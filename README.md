@@ -82,7 +82,7 @@ CHANGELOG
 	v0.2 (20171121)		[*] Fixed some (non breaking) typos in code and readme
 					[!] Fixed some sanity check bugs based on some tips from /r/bash
 					[*] Cleaned up some code and squashed a couple of shellcheck warnings
-	v0.3 (20171122)		[*] Removed some unnecessary code
+	v0.3 (20171122)		[-] Removed some unnecessary code
 					[*] Now using tput instead of hardcoded terminal sequences for output
 					[!] Fixed silly little bug in bash version check
 
