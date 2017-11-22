@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    kernel.org changelog shell parser v0.2
+#    kernel.org changelog shell parser v0.3
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    echo "kernel.org changelog shell parser v0.2"
+    echo "kernel.org changelog shell parser v0.3"
     echo "Copyright (C) 2017 Marcus Hoffren."
     echo "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     echo "This is free software: you are free to change and redistribute it."
@@ -36,12 +36,16 @@ usage() {
 }
 
 error() {
-    { echo -e "\n\e[91m*\e[0m ${*}\n" 1>&2; exit 1; }
+    { echo -e "\n${redfg}*${off} ${*}\n" 1>&2; exit 1; }
 }
 
 missing() {
-    type -p "${1}" >/dev/null || { error "\033[1m${1}\033[m is missing. install \033[1m${2}\033[m"; exit 1; }
+    type -p "${1}" >/dev/null || error "${bold}${1}${off} is missing. install ${bold}${2}${off}"
 }
+
+bold=$(tput bold)
+redfg=$(tput setaf 1)
+off=$(tput sgr 0)
 
 ### <sanity_check>
 
@@ -49,7 +53,7 @@ if [[ ${BASH_VERSINFO[0]} -lt "4" ]] || [[ ${BASH_VERSINFO[0]} -eq "4" && ${BASH
     error "${0##*/} requires \033[1mbash v4.2\033[m or newer"
 fi
 
-[[ $(getopt -V) =~ util-linux ]] || error "getopt is missing or is the wrong version. \033[1mutil-linux getopt\033[m required"
+[[ $(getopt -V) =~ util-linux ]] || error "getopt is missing or is the wrong version. ${bold}util-linux getopt${off} is required"
 
 missing "curl" "curl"
 missing "awk" "awk"
@@ -58,7 +62,7 @@ missing "awk" "awk"
 
 ### <script_arguments>
 
-{ OPTS=$(getopt -nkcp.sh -a -o "vk:h" -l "version,kernel:,help" -- "${@}") || error "getopt: Error in argument"; }
+{ OPTS=$(getopt -nkcp.sh -a -o "vk:h" -l "version,kernel:,help" -- "${@}") || error "${bold}getopt${off}: Error in argument"; }
 
 eval set -- "${OPTS}" # evaluating to avoid white space separated expansion
 
@@ -80,7 +84,7 @@ while true; do
 	    usage
 	    exit 1;;
     esac
-done; unset OPTS version
+done; unset OPTS version redfg bold off
 
 int="${1}"
 

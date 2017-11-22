@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-	0.2
+	0.3
 
 SYNOPSIS:
 
@@ -12,8 +12,8 @@ SYNOPSIS:
 
 DESCRIPTION
 
-	This script parses https://www.kernel.org/pub/linux/kernel/v*.x/ for
-	changelogs, and displays them in shell.
+	This script displays kernel changelogs from
+	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell.
 
 	For unknown reasons, only minor updates (x.x.x) have a changelog on
 	kernel.org. Thus even though this script supports the format, major
@@ -47,7 +47,7 @@ DEPENDENCIES
 	- bash v4.2 or newer
 	- curl
 	- awk
-	- util-linux getopt
+	- getopt from util-linux
 
 	kcp.sh has built in sanity checks and will exit if any of these
 	conditions are not met.
@@ -82,6 +82,9 @@ CHANGELOG
 	v0.2 (20171121)		[*] Fixed some (non breaking) typos in code and readme
 					[!] Fixed some sanity check bugs based on some tips from /r/bash
 					[*] Cleaned up some code and squashed a couple of shellcheck warnings
+	v0.3 (20171122)		[*] Removed some unnecessary code
+				[*] Now using tput instead of hardcoded terminal sequences for output
+
 TODO
 
 	Send ideas to marcus@harikazen.com
