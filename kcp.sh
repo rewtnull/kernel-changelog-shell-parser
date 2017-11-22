@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    kernel.org changelog shell parser v0.3
+#    kernel.org changelog shell parser v0.4
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    echo "kernel.org changelog shell parser v0.3"
+    echo "kernel.org changelog shell parser v0.4"
     echo "Copyright (C) 2017 Marcus Hoffren."
     echo "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     echo "This is free software: you are free to change and redistribute it."
@@ -20,7 +20,7 @@ version() {
 }
 
 usage() {
-    echo "Usage: ${0##*/} [-h|--help] [-v|--version] <-k|--kernel <version>> [int]"
+    echo "Usage: ${0##*/} [-h|--help] [-v|--version] <-k|--kernel <version>> [int|hash]"
     echo ""
     echo "-h, --help              Display this help"
     echo "-v, --version           Display version and exit"
@@ -30,8 +30,9 @@ usage() {
     echo "-k, --kernel <version>  Kernel version in format"
     echo "                        <1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]"
     echo "int                     Commit# (in order of appearance)"
+    echo "hash                    Commit hash"
     echo ""
-    echo "Required option is --kernel, and optionally an integer"
+    echo "Required option is --kernel, and optionally an integer or a hash"
     echo ""
 }
 
@@ -86,7 +87,7 @@ while true; do
     esac
 done; unset OPTS version redfg bold off
 
-int="${1}"
+arg="${1}"
 
 re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
 [[ ${kernel} =~ ${re} ]] || { usage; exit 1; }; unset re
@@ -96,10 +97,12 @@ re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
 majver="v${kernel%%.*}.x" # major version in format "vN.x" where N is an int
 changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/"${majver}"/ChangeLog-"${kernel}")"; unset majver kernel # scrape changelog from kernel.org
 
-if [[ ${int} =~ ^-?[0-9]+$ ]]; then
-    echo "${changelog}" | awk -v n="${int}" '/^commit/ {line++} (line==n) {print}' # match n from ^commit until next ^commit
+if [[ ${arg} =~ ^-?[0-9]+$ ]]; then # if input argument is an integer
+    echo "${changelog}" | awk -v n="${arg}" '/^commit/ {line++} (line==n) {print}' # match n from ^commit until next ^commit
+elif [[ ${arg} =~ ^[a-zA-Z0-9]+$ ]]; then # if input argument consists of numbers and/or letters
+    echo "${changelog}" | awk '/^commit[[:space:]]'${arg}'$/ {p=1;print;next} /^commit/ && p {p=0} p' # match hash until ^commit or eof
 else
-    echo "${changelog}"
-fi; unset changelog int
+    echo "${changelog}" # if no input argument, show the entire changelog
+fi; unset changelog arg
 
 exit 0

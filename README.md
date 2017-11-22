@@ -4,28 +4,29 @@ NAME
 
 VERSION
 
-	0.3
+	0.4
 
 SYNOPSIS:
 
-	kcp.sh [-h|--help] [-v|--version] <-k|--kernel <version>> [int]
+	kcp.sh [-h|--help] [-v|--version] <-k|--kernel <version>> [int|hash]
 
 DESCRIPTION
 
 	This script displays kernel changelogs from
 	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell.
 
+	- By default it displays the entire changelog for the selected
+	  kernel version
+	- If an integer is entered at the end of the script arguments,
+	  it displays commit # (in order of appearance in changelog)
+	- If a hash is entered at the end of the script arguments,
+	  it displays a commit by hash
+
 	For unknown reasons, only minor updates (x.x.x) have a changelog on
 	kernel.org. Thus even though this script supports the format, major
 	(x.x) releases will return a 404. Example: At the time this script is
 	written, the latest major version is 4.14, which lacks a changelog.
-	However, when the minor 4.14.1 update is released there will be a
-	changelog for it available.
-
-	- By default it displays the entire changelog for the selected
-	  kernel version
-	- Optionally displays commit# (in order of appearance in changelog)
-	  if an integer is entered at the end of the script arguments.
+	However, the minor update 4.14.1 has a changelog available.
 
 ARGUMENTS
 
@@ -37,8 +38,9 @@ ARGUMENTS
 	-k, --kernel <version>	Kernel version in format
 					<1-9>[1-9].<1-9>[1-9][.<1-9>[1-9]]
 	int				Commit# (in order of appearance)
+	hash				Commit hash
 
-	Required option is --kernel, and optionally an integer
+	Required option is --kernel, and optionally an integer or a hash
 
 DEPENDENCIES
 
@@ -85,7 +87,7 @@ CHANGELOG
 	v0.3 (20171122)		[-] Removed some unnecessary code
 					[*] Now using tput instead of hardcoded terminal sequences for output
 					[!] Fixed silly little bug in bash version check
-
+	v0.4 (20171122)		[+] Added support to display commit by hash
 
 TODO
 
