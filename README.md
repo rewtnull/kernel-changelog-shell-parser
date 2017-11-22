@@ -13,8 +13,9 @@ SYNOPSIS:
 DESCRIPTION
 
 	This script displays kernel changelogs from
-	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell. Bash and fully
-	POSIX compatible versions available.
+	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell.
+
+	bash and (fully POSIX compatible) sh versions available.
 
 	- By default it displays the entire changelog for the selected
 	  kernel version
