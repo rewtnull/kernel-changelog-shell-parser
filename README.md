@@ -83,7 +83,7 @@ CHANGELOG
 					[!] Fixed some sanity check bugs based on some tips from /r/bash
 					[*] Cleaned up some code and squashed a couple of shellcheck warnings
 	v0.3 (20171122)		[*] Removed some unnecessary code
-				[*] Now using tput instead of hardcoded terminal sequences for output
+					[*] Now using tput instead of hardcoded terminal sequences for output
 
 TODO
 
