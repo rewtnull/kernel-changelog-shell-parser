@@ -47,7 +47,7 @@ DEPENDENCIES
 	- bash v4.2 or newer
 	- curl
 	- awk
-	- gnu getopt
+	- util-linux getopt
 
 	kcp.sh has built in sanity checks and will exit if any of these
 	conditions are not met.
