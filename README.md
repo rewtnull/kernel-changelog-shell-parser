@@ -100,7 +100,7 @@ CHANGELOG
 					[*] Now using tput instead of hardcoded terminal sequences for output
 					[!] Fixed silly little bug in bash version check
 	v0.4 (20171122)		[+] Added support to display commit by hash
-	v0.5 (20171122)		[+] Rewrote the script to be fully POSIX compatible, and included it
+	v0.5 (20171122)		[+] Wrote and included a fully POSIX compatible version of the script
 					[*] Squashed the last shellcheck warning
 
 TODO
