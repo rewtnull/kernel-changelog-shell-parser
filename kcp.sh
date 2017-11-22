@@ -50,7 +50,7 @@ off=$(tput sgr 0)
 ### <sanity_check>
 
 if [[ ${BASH_VERSINFO[0]} -lt "4" ]] || [[ ${BASH_VERSINFO[0]} -ge "4" && ${BASH_VERSINFO[1]} -lt "2" ]]; then
-    error "${0##*/} requires \033[1mbash v4.2\033[m or newer"
+    error "${0##*/} requires ${bold}bash v4.2${off} or newer"
 fi
 
 [[ $(getopt -V) =~ util-linux ]] || error "getopt is missing or is the wrong version. ${bold}util-linux getopt${off} is required"
