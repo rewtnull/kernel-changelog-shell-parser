@@ -49,7 +49,7 @@ off=$(tput sgr 0)
 
 ### <sanity_check>
 
-if [[ ${BASH_VERSINFO[0]} -lt "4" ]] || [[ ${BASH_VERSINFO[0]} -eq "4" && ${BASH_VERSINFO[1]} -lt "2" ]]; then
+if [[ ${BASH_VERSINFO[0]} -lt "4" ]] || [[ ${BASH_VERSINFO[0]} -ge "4" && ${BASH_VERSINFO[1]} -lt "2" ]]; then
     error "${0##*/} requires \033[1mbash v4.2\033[m or newer"
 fi
 
