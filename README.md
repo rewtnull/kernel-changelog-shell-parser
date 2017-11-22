@@ -15,7 +15,7 @@ DESCRIPTION
 	This script displays kernel changelogs from
 	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell.
 
-	bash and (fully POSIX compatible) sh versions available.
+	bash and (fully POSIX compatible) sh versions included.
 
 	- By default it displays the entire changelog for the selected
 	  kernel version
@@ -44,7 +44,7 @@ ARGUMENTS
 
 	Required option is --kernel, and optionally an integer or a hash
 
-	Note: The POSIX compatible version only supports the short options.
+	Note: The POSIX version only supports the short options.
 
 DEPENDENCIES
 
@@ -60,7 +60,7 @@ DEPENDENCIES
 	    - bash v4.2 or newer for the ordinary version
 	    - getopt from util-linux
 
-	    POSIX compatible version
+	    POSIX version
 
 	    - sh
 
