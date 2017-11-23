@@ -37,7 +37,7 @@ usage() {
 }
 
 error() {
-    { echo -e "\n${redfg}*${off} ${*}\n" 1>&2; exit 1; }
+    echo -e "\n${redfg}*${off} ${*}\n" 1>&2; exit 1
 }
 
 missing() {
@@ -63,7 +63,7 @@ missing "awk" "awk"
 
 ### <script_arguments>
 
-{ OPTS=$(getopt -nkcp.sh -a -o "vk:h" -l "version,kernel:,help" -- "${@}") || error "${bold}getopt${off}: Error in argument"; }
+OPTS=$(getopt -nkcp.sh -a -o "vk:h" -l "version,kernel:,help" -- "${@}") || error "${bold}getopt${off}: Error in argument"
 
 eval set -- "${OPTS}" # evaluating to avoid white space separated expansion
 
@@ -94,8 +94,8 @@ re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
 
 ### </script_arguments>
 
-majver="v${kernel%%.*}.x" # major version in format "vN.x" where N is an int
-changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/"${majver}"/ChangeLog-"${kernel}")"; unset majver kernel # scrape changelog from kernel.org
+majver=v${kernel%%.*}.x # major version in format "vN.x" where N is an int
+changelog=$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/"${majver}"/ChangeLog-"${kernel}"); unset majver kernel # scrape changelog from kernel.org
 
 if [[ ${arg} =~ ^-?[0-9]+$ ]]; then # if input argument is an integer
     echo "${changelog}" | awk -v n="${arg}" "/^commit/ {line++} (line==n) {print}" # match n from ^commit until next ^commit
@@ -106,4 +106,3 @@ else
 fi; unset changelog arg
 
 exit 0
-
