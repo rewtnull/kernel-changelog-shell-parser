@@ -87,10 +87,9 @@ while true; do
     esac
 done; unset OPTS version redfg bold off
 
-arg="${1}"
+[[ ${kernel} =~ ^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$ ]] || { usage; exit 1; } # kernel version format check
 
-re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
-[[ ${kernel} =~ ${re} ]] || { usage; exit 1; }; unset re # kernel version format check
+arg="${1}" # int or hash
 
 ### </script_arguments>
 
