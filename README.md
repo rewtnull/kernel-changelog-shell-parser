@@ -57,7 +57,7 @@ DEPENDENCIES
 
 	    Bash version
 
-	    - bash v4.2 or newer for the ordinary version
+	    - bash v4.2 or newer
 	    - getopt from util-linux
 
 	    POSIX version
