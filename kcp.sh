@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    kernel.org changelog shell parser v0.5
+#    kernel.org changelog shell parser v0.6
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    echo "kernel.org changelog shell parser v0.5"
+    echo "kernel.org changelog shell parser v0.6"
     echo "Copyright (C) 2017 Marcus Hoffren."
     echo "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     echo "This is free software: you are free to change and redistribute it."
@@ -90,7 +90,7 @@ done; unset OPTS version redfg bold off
 arg="${1}"
 
 re="^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$"
-[[ ${kernel} =~ ${re} ]] || { usage; exit 1; }; unset re
+[[ ${kernel} =~ ${re} ]] || { usage; exit 1; }; unset re # kernel version format check
 
 ### </script_arguments>
 

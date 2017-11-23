@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-	0.5
+	0.6
 
 SYNOPSIS:
 
@@ -15,7 +15,7 @@ DESCRIPTION
 	This script displays kernel changelogs from
 	https://www.kernel.org/pub/linux/kernel/v*.x/ in shell.
 
-	bash and (fully POSIX compatible) sh versions included.
+	bash and (fully POSIX compliant) sh versions included.
 
 	- By default it displays the entire changelog for the selected
 	  kernel version
@@ -64,7 +64,7 @@ DEPENDENCIES
 
 	    - sh
 
-	kcp.sh has built in sanity checks and will exit if any of these
+	kcp.sh has built in sanity checks and will exit if these
 	conditions are not met.
 
 CONFIGURATION
@@ -103,6 +103,10 @@ CHANGELOG
 	v0.4 (20171122)		[+] Added support to display commit by hash
 	v0.5 (20171122)		[+] Wrote and included a fully POSIX compatible version of the script
 					[*] Squashed the last shellcheck warning
+	v0.6 (20171123)		[-] *posix* Removed redundant getopt check
+					[*] *posix* Changed sanity tests to something a bit more portable
+					[*] *posix* Minor code cleanup
+					[*] *bash* Minor code cleanup
 
 TODO
 
