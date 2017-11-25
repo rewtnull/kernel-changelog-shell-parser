@@ -104,10 +104,8 @@ CHANGELOG
 	v0.6 (20171125)		[-] *posix* Removed redundant getopt check
 					[*] *posix* Changed sanity tests to something a bit more portable
 					[*] *both* Minor code cleanup
-					[*] *posix* Wrote a function to extract main, maj, or min version
-					    from version string
-					[+] *posix* Now can display changelogs older than v3.x
-					[+] *posix* Now displays the url in the output
+					[+] *both* Now can display changelogs older than v3.x
+					[+] *both* Now displays the url in the output
 
 TODO
 

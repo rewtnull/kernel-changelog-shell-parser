@@ -36,18 +36,6 @@ usage() {
     printf "%s\n" ""
 }
 
-# extractver(main|maj|min) - extracts main, major, or min version from version string
-extractver() {
-    if [ "$1" = "main" ]; then
-	echo "${kernel%%.*}"
-    elif expr "$kernel" : "^[0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}$" >/dev/null; then  # is format N[N].N[N].N[N]
-	[ "$1" = "maj" ] && { tmpkrn=${kernel#*.*}; echo "${tmpkrn%*.*}"; } || echo "${kernel#*.*.}" # extract x.N.x
-    elif expr "$kernel" : "^[0-9]\{1,2\}\.[0-9]\{1,2\}$" >/dev/null; then # is format N[N].N[N]
-	mainver=$majver; majver=$minver
-	[ "$1" = "maj" ] && echo "${kernel%*.*}" || echo "${kernel#*.*}"
-    fi; unset tmpkrn
-}
-
 error() {
     printf "\n%s\n%s\n" "$redfg*$off ${*}" "" 1>&2; exit 1
 }
@@ -86,9 +74,8 @@ if ! expr "$kernel" : "^[0-9]\{1,2\}\.[0-9]\{1,2\}\.\{0,1\}[0-9]\{0,2\}$" >/dev/
     usage; exit 1
 fi
 
-mainver=$(extractver "main") # extract main version from version string
+mainver=${kernel%%.*}
 majver=x
-minver=
 
 ### </version handling>
 
@@ -97,9 +84,9 @@ minver=
 changelog="$(curl -f -o - -s --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")" # scrape changelog from kernel.org
 
 if [ "$?" = "22" ]; then # return code 22 = 404
-    majver=$(extractver "min")
+    majver=${kernel#*.}; majver=${majver%.*} # majver = minver
     changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")"
-fi; unset minver
+fi
 
 ### </scrape changelog>
 

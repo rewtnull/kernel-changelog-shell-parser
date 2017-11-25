@@ -87,21 +87,45 @@ while true; do
     esac
 done; unset OPTS version redfg bold off
 
-[[ ${kernel} =~ ^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$ ]] || { usage; exit 1; } # kernel version format check
-
 arg="${1}" # int or hash
 
 ### </script_arguments>
 
-majver=v${kernel%%.*}.x # major version in format "vN.x" where N is an int
-changelog=$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/"${majver}"/ChangeLog-"${kernel}"); unset majver kernel # scrape changelog from kernel.org
+### <version handling>
 
-if [[ ${arg} =~ ^-?[0-9]+$ ]]; then # if input argument is an integer
+[[ ${kernel} =~ ^[0-9]{1,2}\.[0-9]{1,2}(\.[0-9]{1,2})?$ ]] || { usage; exit 1; } # kernel version format check
+
+mainver=${kernel%%.*}
+majver=x
+minver=""
+
+### </version handling>
+
+### <scrape changelog>
+
+changelog="$(curl -f -o - -s --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")" # scrape changelog from kernel.org
+
+if [[ $? == "22" ]]; then # return code 22 = 404
+    majver=${kernel#*.}; majver=${majver%.*} # majver = minver
+    changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")"
+fi
+
+### </scrape changelog>
+
+### <output>
+
+echo "URL:   https://www.kernel.org/pub/linux/kernel/v$mainver.$majver/ChangeLog-$kernel"; unset majver kernel
+
+if [[ ${mainver} -lt "3" ]]; then # Since older changelogs are in a different format, just display the entire changelog
+    echo "$changelog"
+elif [[ ${arg} =~ ^-?[0-9]+$ ]]; then # if input argument is an integer
     echo "${changelog}" | awk -v n="${arg}" "/^commit/ {line++} (line==n) {print}" # match n from ^commit until next ^commit
 elif [[ ${arg} =~ ^[a-zA-Z0-9]+$ ]]; then # if input argument consists of numbers and/or letters
     echo "${changelog}" | awk "/^commit[[:space:]]${arg}$/ {p=1;print;next} /^commit/ && p {p=0} p" # match hash until ^commit or eof
 else
     echo "${changelog}" # if no input argument, show the entire changelog
-fi; unset changelog arg
+fi; unset changelog arg mainver
+
+### </output>
 
 exit 0
