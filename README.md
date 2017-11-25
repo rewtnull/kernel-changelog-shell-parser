@@ -24,11 +24,9 @@ DESCRIPTION
 	- If a hash is entered at the end of the script arguments,
 	  it displays a commit by hash
 
-	For unknown reasons, only minor updates (x.x.x) have a changelog on
-	kernel.org. Thus even though this script supports the format, major
-	(x.x) releases will return a 404. Example: At the time this script is
-	written, the latest major version is 4.14, which lacks a changelog.
-	However, the minor update 4.14.1 has a changelog available.
+	Changelogs older than v3.x use a different format so any optional
+	arguments will be ignored for these, so the entire changelog will
+	be displayed.
 
 ARGUMENTS
 
@@ -103,10 +101,13 @@ CHANGELOG
 	v0.4 (20171122)		[+] Added support to display commit by hash
 	v0.5 (20171122)		[+] Wrote and included a fully POSIX compatible version of the script
 					[*] Squashed the last shellcheck warning
-	v0.6 (20171123)		[-] *posix* Removed redundant getopt check
+	v0.6 (20171125)		[-] *posix* Removed redundant getopt check
 					[*] *posix* Changed sanity tests to something a bit more portable
-					[*] *posix* Minor code cleanup
-					[*] *bash* Minor code cleanup
+					[*] *both* Minor code cleanup
+					[*] *posix* Wrote a function to extract main, maj, or min version
+					    from version string
+					[+] *posix* Now can display changelogs older than v3.x
+					[+] *posix* Now displays the url in the output
 
 TODO
 
