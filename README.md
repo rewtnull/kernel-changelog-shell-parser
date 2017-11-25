@@ -25,7 +25,7 @@ DESCRIPTION
 	  it displays a commit by hash
 
 	Changelogs older than v3.x use a different format so any optional
-	arguments will be ignored for these, so the entire changelog will
+	arguments will be ignored for these, and the entire changelog will
 	be displayed.
 
 ARGUMENTS
