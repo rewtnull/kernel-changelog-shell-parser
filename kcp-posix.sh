@@ -100,9 +100,9 @@ printf "%s\n" "URL:   https://www.kernel.org/pub/linux/kernel/v$mainver.$majver/
 if [ "$mainver" -lt "3" ]; then # Since older changelogs are in a different format, just display the entire changelog
     printf "%s\n" "$changelog"
 elif expr "$arg" : "^[0-9]*$" >/dev/null; then # if input argument is an integer
-    echo "$changelog" | awk -P -v n="${arg}" "/^commit/ {line++} (line==n) {print}" # match n from ^commit until next ^commit
+    echo "$changelog" | awk -v n="${arg}" "/^commit/ {line++} (line==n) {print}" # match n from ^commit until next ^commit
 elif expr "$arg" : "^[a-zA-Z0-9]*$" >/dev/null; then # if input argument consists of numbers and/or letters
-    echo "$changelog" | awk -P "/^commit[[:space:]]$arg$/ {p=1;print;next} /^commit/ && p {p=0} p" # match hash until ^commit or eof
+    echo "$changelog" | awk "/^commit[[:space:]]$arg$/ {p=1;print;next} /^commit/ && p {p=0} p" # match hash until ^commit or eof
 else
     printf "%s\n" "$changelog" # if no optional input argument, show the entire changelog
 fi; unset mainver changelog arg redfg bold off
