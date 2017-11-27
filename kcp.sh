@@ -107,6 +107,7 @@ changelog="$(curl -f -o - -s --compressed https://www.kernel.org/pub/linux/kerne
 retcode=$?
 
 case ${retcode} in
+    0) :;;
     6) error "Could not resolve host: www.kernel.org";;
     22) majver=${kernel#*.}; majver=${majver%.*} # 22 = 404
 	changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"${mainver}"."${majver}"/ChangeLog-"${kernel}")";;
