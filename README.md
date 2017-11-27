@@ -48,6 +48,7 @@ DEPENDENCIES
 
 	- curl
 	- awk
+	- ncurses
 
 	Additionally, depending on the script version you will need:
 
