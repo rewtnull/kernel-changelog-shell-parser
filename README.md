@@ -106,12 +106,11 @@ CHANGELOG
 					[+] *both* Now displays the url in the output
 	v0.7 (20171127)		[-] Removed root dependency mention from readme
 					[-] *posix* Removed redundant getopts check
+					[-] *posix* Removed -P flag from awk. Not needed, and breaks if not (g/m)awk
 					[-] *bash* Removed unused variable declaration
 					[+] *both* Added kernel.org resolve check
+					[+] *both* Now catching any curl return codes > 0 and passes 0
 					[+] *both* Added a check to see if tput is present
-					[+] *both* Now catching any curl return codes > 0
-					[!] *both* Added needed case for return code 0
-					[-] *posix* Removed -P (--posix) flag from awk. Not really needed, and breaks if not (g/m)awk
 
 TODO
 
