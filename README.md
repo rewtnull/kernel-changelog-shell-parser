@@ -111,6 +111,7 @@ CHANGELOG
 					[+] *both* Added a check to see if tput is present
 					[+] *both* Now catching any curl return codes > 0
 					[!] *both* Added needed case for return code 0
+					[-] *posix* Removed -P (--posix) flag from awk. Not really needed, and breaks if not (g/m)awk
 
 TODO
 
