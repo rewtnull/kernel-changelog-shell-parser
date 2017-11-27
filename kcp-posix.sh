@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#    kernel.org changelog shell parser posix v0.6
+#    kernel.org changelog shell parser posix v0.7
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    printf "%s\n" "kernel.org changelog shell parser posix v0.6"
+    printf "%s\n" "kernel.org changelog shell parser posix v0.7"
     printf "%s\n" "Copyright (C) 2017 Marcus Hoffren."
     printf "%s\n" "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     printf "%s\n" "This is free software: you are free to change and redistribute it."
@@ -40,7 +40,7 @@ error() {
     printf "\n%s\n%s\n" "$redfg*$off ${*}" "" 1>&2; exit 1
 }
 
-bold=$(tput bold)
+bold=$(tput bold) || error "ncurses is missing"
 redfg=$(tput setaf 1)
 off=$(tput sgr 0)
 
@@ -52,8 +52,6 @@ which awk >/dev/null || error "$bold awk$off is missing."
 ### </sanity_check>
 
 ### <script_arguments>
-
-(! getopts "vk:h" opt) && { usage; exit 1; }
 
 while getopts "vk:h" opt; do
      case $opt in
@@ -83,10 +81,14 @@ majver=x
 
 changelog="$(curl -f -o - -s --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")" # scrape changelog from kernel.org
 
-if [ "$?" = "22" ]; then # return code 22 = 404
-    majver=${kernel#*.}; majver=${majver%.*} # majver = minver
-    changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")"
-fi
+retcode=$?
+
+case $retcode in
+    6) error "Could not resolve host: www.kernel.org";;
+    22) majver=${kernel#*.}; majver=${majver%.*} # 22 = 404
+	changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")";;
+    *) error "curl exited with return code $retcode";;
+esac; unset retcode
 
 ### </scrape changelog>
 

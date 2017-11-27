@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    kernel.org changelog shell parser v0.6
+#    kernel.org changelog shell parser v0.7
 #    Copyright (C) 2017 Marcus Hoffren.
 #    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 #    This is free software: you are free to change and redistribute it.
@@ -9,7 +9,7 @@
 #    Written by Marcus Hoffren. marcus@harikazen.com
 
 version() {
-    echo "kernel.org changelog shell parser v0.6"
+    echo "kernel.org changelog shell parser v0.7"
     echo "Copyright (C) 2017 Marcus Hoffren."
     echo "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
     echo "This is free software: you are free to change and redistribute it."
@@ -44,7 +44,7 @@ missing() {
     type -p "${1}" >/dev/null || error "${bold}${1}${off} is missing. install ${bold}${2}${off}"
 }
 
-bold=$(tput bold)
+bold=$(tput bold) || error "ncurses is missing"
 redfg=$(tput setaf 1)
 off=$(tput sgr 0)
 
@@ -97,27 +97,30 @@ arg="${1}" # int or hash
 
 mainver=${kernel%%.*}
 majver=x
-minver=""
 
 ### </version handling>
 
 ### <scrape changelog>
 
-changelog="$(curl -f -o - -s --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")" # scrape changelog from kernel.org
+changelog="$(curl -f -o - -s --compressed https://www.kernel.org/pub/linux/kernel/v"${mainver}"."${majver}"/ChangeLog-"${kernel}")" # scrape changelog from kernel.org
 
-if [[ $? == "22" ]]; then # return code 22 = 404
-    majver=${kernel#*.}; majver=${majver%.*} # majver = minver
-    changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"$mainver"."$majver"/ChangeLog-"$kernel")"
-fi
+retcode=$?
+
+case ${retcode} in
+    6) error "Could not resolve host: www.kernel.org";;
+    22) majver=${kernel#*.}; majver=${majver%.*} # 22 = 404
+	changelog="$(curl -f -o - -sS --compressed https://www.kernel.org/pub/linux/kernel/v"${mainver}"."${majver}"/ChangeLog-"${kernel}")";;
+    *) error "curl exited with return code ${retcode}";;
+esac; unset retcode
 
 ### </scrape changelog>
 
 ### <output>
 
-echo "URL:   https://www.kernel.org/pub/linux/kernel/v$mainver.$majver/ChangeLog-$kernel"; unset majver kernel
+echo "URL:   https://www.kernel.org/pub/linux/kernel/v${mainver}.${majver}/ChangeLog-${kernel}"; unset majver kernel
 
 if [[ ${mainver} -lt "3" ]]; then # Since older changelogs are in a different format, just display the entire changelog
-    echo "$changelog"
+    echo "${changelog}"
 elif [[ ${arg} =~ ^-?[0-9]+$ ]]; then # if input argument is an integer
     echo "${changelog}" | awk -v n="${arg}" "/^commit/ {line++} (line==n) {print}" # match n from ^commit until next ^commit
 elif [[ ${arg} =~ ^[a-zA-Z0-9]+$ ]]; then # if input argument consists of numbers and/or letters

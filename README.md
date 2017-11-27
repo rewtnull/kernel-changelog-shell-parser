@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-	0.6
+	0.7
 
 SYNOPSIS:
 
@@ -104,6 +104,12 @@ CHANGELOG
 					[*] *both* Minor code cleanup
 					[+] *both* Now can display changelogs older than v3.x
 					[+] *both* Now displays the url in the output
+	v0.7 (20171127)		[-] Removed root dependency mention from readme
+					[-] *posix* Removed redundant getopts check
+					[-] *bash* Removed unused variable declaration
+					[+] *both* Added kernel.org resolve check
+					[+] *both* Added a check to see if tput is present
+					[+] *both* Now catching any curl return codes > 0
 
 TODO
 
